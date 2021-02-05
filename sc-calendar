@@ -1,0 +1,24 @@
+import click
+import pickle
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
+SCOPES = ['https://www.googleapis.com/auth/calendar.events']
+
+@click.group()
+def sc_calendar():
+    pass
+
+@sc_calendar.command()
+@click.argument('secret-file', type=click.Path(exists=True), default='client_secret.json')
+def login(secret_file):
+    SCOPES = ['https://www.googleapis.com/auth/calendar']
+    if not os.path.exists(secret_file):
+        raise Exception(secret_file + 'doesn\'t exist')
+    flow = InstalledAppFlow.from_client_secrets_file(secret_file, SCOPES)
+    creds = flow.run_local_server()
+    pickle.dump(creds, open('token.pickle', 'wb'))
+
+sc_calendar(prog_name='python3 sc-calendar')

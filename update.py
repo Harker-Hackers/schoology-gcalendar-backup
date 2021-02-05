@@ -11,19 +11,20 @@ except FileNotFoundError:
     raise Exception('Not authorized. Run "python3 sc-calendar login --help".')
 
 service = build('calendar', 'v3', credentials=creds)
-
 event = {
     'summary': 'Yeet',
     'description': '',
     'start': {
-        'dateTime': '2020-02-05T09:00:00-07:00',
+        'dateTime': '2021-02-05T09:00:00-07:00',
+        'timeZone': 'America/Los_Angeles'
+    },
+    'end': {
+        'dateTime': '2021-02-05T09:00:00-07:00',
         'timeZone': 'America/Los_Angeles'
     },
     'reminders': {
         'useDefault': True,
     },
-    'endTimeUnspecified': True
 }
 
-#print(service.events().list(calendarId='primary').execute())
 service.events().insert(calendarId='primary', body=event).execute()

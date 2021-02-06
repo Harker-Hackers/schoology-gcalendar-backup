@@ -1,0 +1,5 @@
+click
+google-api-python-client 
+google-auth-httplib2 
+google-auth-oauthlib
+git+https://github.com/Harker-Hackers/schoolopy

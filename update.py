@@ -6,14 +6,20 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import schoolopy
 
-days = [datetime.date.today()]
-for i in [1, 2, 3, 4, 5, 6]:
-    days.append(str(datetime.date.today() + datetime.timedelta(days=i)))
-
 sc_conf = loads(open('schoology.json', 'r').read())
 sc = schoolopy.Schoology(schoolopy.Auth(sc_conf['key'], sc_conf['secret']))
 me = sc.get_me()
-assignments = sc.get_assignments(2692876554)
+assignments = sc.get_assignments(section_id=2692851162)
+
+today=datetime.datetime.today()
+
+recentAssignments=[]
+for i in assignments:
+    assignmentTime = datetime.datetime.strptime(i.due, "%Y-%m-%d %H:%M:%S")
+    tDelta=(assignmentTime-today).days
+    if (0<=tDelta<=6):
+        recentAssignments.append(i)
+        print("Assignment: " + str(i))
 
 me['tz_offset'] = str(me['tz_offset'])
 if len(me['tz_offset'].replace('-', '')) == 1:
@@ -22,9 +28,7 @@ if len(me['tz_offset'].replace('-', '')) == 1:
 me['tz_offset'] = me['tz_offset'] + ':00'
 
 ##########################
-assignment = assignments[0]
-if str(assignment['due'][:assignment['due'].index(' ')]) in days:
-    print(assignment['title'])
+
     
 exit()
 

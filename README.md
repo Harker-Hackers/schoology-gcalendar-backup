@@ -39,7 +39,7 @@ This should open a browser. Login to your google account.
 
 Head to `[your school's schoology URL]/api`
 
-Now edit [`schoology.json`](schoology.json) with your key and secret. Add your classes you want to have assignments added's ID.
+Now edit [`schoology.json`](schoology.json) with your key and secret. Add your classes you want to have assignments added's ID. Example configuration is in ['schoology.json`].
 
 You are now setup!
 

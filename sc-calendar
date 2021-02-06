@@ -21,4 +21,8 @@ def login(secret_file):
     creds = flow.run_local_server()
     pickle.dump(creds, open('token.pickle', 'wb'))
 
+@sc_calendar.command()
+def push():
+    import update
+
 sc_calendar(prog_name='python3 sc-calendar')

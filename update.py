@@ -11,7 +11,10 @@ sc_conf = loads(open('schoology.json', 'r').read())
 sc = schoolopy.Schoology(schoolopy.Auth(sc_conf['key'], sc_conf['secret']))
 sc.limit = 10*10*10
 me = sc.get_me()
-assignments = sc.get_assignments(section_id=sc_conf['classes'][0])
+assignments = []
+
+for class_ in sc_conf['classes']:
+    assignments.extend(sc.get_assignments(section_id=class_))
 
 today=datetime.datetime.today()
 
@@ -42,12 +45,16 @@ for assignment in recentAssignments:
         raise Exception('Not authorized. Run "python3 sc-calendar login --help".')
     service = build('calendar', 'v3', credentials=creds)
 
-    events = service.events().list(calendarId='primary').execute()['items']
+    events = service.events().list(
+        calendarId='primary', 
+        timeMin=due,
+        timeMax=due
+    ).execute()['items']
+
     event_names = []
     for event in events:
         event_names.append(event['summary'])
 
-    print(event_names)
     if assignment['title'] not in event_names:
         print(assignment['title'])
         event = {
